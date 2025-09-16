@@ -33,6 +33,16 @@ class RMS:
 
         self.lbl_bg = Label(self.root, image = self.bg_img).place(x = 400, y = 180, width = 850, height = 350)
 
+        # Update Details
+        self.lbl_course = Label(self.root, text = "Total Courses\n[ 0 ]", font = ("goudy old style", 20), bd = 10, relief = RIDGE, bg = "#e43b06", fg = "white")
+        self.lbl_course.place(x = 400, y = 530, width = 275, height = 100)
+
+        self.lbl_student = Label(self.root, text = "Total Students\n[ 0 ]", font = ("goudy old style", 20), bd = 10, relief = RIDGE, bg = "#0676ad", fg = "white")
+        self.lbl_student.place(x = 685, y = 530, width = 275, height = 100)
+
+        self.lbl_result = Label(self.root, text = "Total Results\n[ 0 ]", font = ("goudy old style", 20), bd = 10, relief = RIDGE, bg = "#038074", fg = "white")
+        self.lbl_result.place(x = 970, y = 530, width = 275, height = 100)        
+
         # Footer
         footer = Label(self.root, text = "SRMS-Student Result Management System\nContact Us For Any Technical Issue: sdebidutta2020@gmail.com", font = ("goudy old style", 12), bg = "#262626", fg = "white").pack(side = BOTTOM, fill = X)  
 
