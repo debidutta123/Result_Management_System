@@ -1,5 +1,6 @@
 from tkinter import *
 from result import Result
+from report import Report
 from course import Course
 from student import Student
 from PIL import Image, ImageTk
@@ -73,7 +74,8 @@ class RMS:
             font=("goudy old style", 15, "bold"),
             bg="#0b5377",
             fg="white",
-            cursor="hand2"
+            cursor="hand2",
+            command=self.view_report
         ).place(x=635, y=5, width=195, height=40)
 
         btn_logout = Button(
@@ -156,6 +158,10 @@ class RMS:
     def add_result(self):
         self.new_win = Toplevel(self.root)
         self.new_obj = Result(self.new_win)
+
+    def view_report(self):
+        self.new_win = Toplevel(self.root)
+        self.new_obj = Report(self.new_win)
 
 
 if __name__ == "__main__":
