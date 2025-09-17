@@ -13,13 +13,20 @@ def create_db():
                     description TEXT
                 )''')
     
-    # cur.execute('''CREATE TABLE IF NOT EXISTS student (
-    #                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #                 name TEXT NOT NULL,
-    #                 email TEXT NOT NULL UNIQUE,
-    #                 course_id INTEGER,
-    #                 FOREIGN KEY(course_id) REFERENCES course(id)
-    #             )''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS student (
+                    roll INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    email TEXT NOT NULL UNIQUE,
+                    gender TEXT,
+                    dob TEXT,
+                    contact TEXT,
+                    admission TEXT,
+                    course TEXT,
+                    state TEXT,
+                    city TEXT,
+                    pin TEXT,
+                    address TEXT
+                )''')
     
     # cur.execute('''CREATE TABLE IF NOT EXISTS result (
     #                 id INTEGER PRIMARY KEY AUTOINCREMENT,
