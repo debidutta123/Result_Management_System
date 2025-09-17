@@ -1,4 +1,5 @@
 from tkinter import *
+from result import Result
 from course import Course
 from student import Student
 from PIL import Image, ImageTk
@@ -62,7 +63,8 @@ class RMS:
             font=("goudy old style", 15, "bold"),
             bg="#0b5377",
             fg="white",
-            cursor="hand2"
+            cursor="hand2",
+            command=self.add_result
         ).place(x=430, y=5, width=195, height=40)
 
         btn_view = Button(
@@ -98,8 +100,7 @@ class RMS:
         self.bg_img = ImageTk.PhotoImage(self.bg_img)
 
         self.lbl_bg = Label(self.root, image=self.bg_img).place(
-            x=400, y=180, width=850, height=350
-        )
+            x=400, y=180, width=850, height=350)
 
         # Update Details
         self.lbl_course = Label(
@@ -151,6 +152,10 @@ class RMS:
     def add_student(self):
         self.new_win = Toplevel(self.root)
         self.new_obj = Student(self.new_win)
+
+    def add_result(self):
+        self.new_win = Toplevel(self.root)
+        self.new_obj = Result(self.new_win)
 
 
 if __name__ == "__main__":

@@ -28,13 +28,15 @@ def create_db():
                     address TEXT
                 )''')
     
-    # cur.execute('''CREATE TABLE IF NOT EXISTS result (
-    #                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #                 student_id INTEGER,
-    #                 subject TEXT NOT NULL,
-    #                 marks REAL NOT NULL,
-    #                 FOREIGN KEY(student_id) REFERENCES student(id)
-    #             )''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS result (
+                    rid INTEGER PRIMARY KEY AUTOINCREMENT,
+                    roll TEXT,
+                    name TEXT,
+                    course TEXT,
+                    marks_ob TEXT,
+                    full_marks TEXT,
+                    per TEXT
+                )''')
     
     con.commit()
     con.close()
