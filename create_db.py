@@ -36,7 +36,18 @@ def create_db():
                     marks_ob TEXT,
                     full_marks TEXT,
                     per TEXT
-                )''')
+                )''') 
+    
+    cur.execute("""CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        fname TEXT,
+        lname TEXT,
+        contact TEXT,
+        email TEXT UNIQUE,
+        question TEXT,
+        answer TEXT,
+        password TEXT
+    )""")
     
     con.commit()
     con.close()

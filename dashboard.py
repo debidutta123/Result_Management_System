@@ -1,9 +1,11 @@
+from math import *
 from tkinter import *
+from datetime import *
 from result import Result
 from report import Report
 from course import Course
 from student import Student
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 
 
 class RMS:
