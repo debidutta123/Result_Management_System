@@ -39,7 +39,7 @@ def create_db():
                 )''') 
     
     cur.execute("""CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        eid INTEGER PRIMARY KEY AUTOINCREMENT,
         fname TEXT,
         lname TEXT,
         contact TEXT,
