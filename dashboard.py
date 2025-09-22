@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from math import *
 from tkinter import *
 from datetime import *
@@ -144,6 +145,15 @@ class RMS:
         )
         self.lbl_result.place(x=970, y=530, width=275, height=100)
 
+        # Clock
+        self.lbl = Label(self.root, text="\nWebCode Clock", font=("Book Antiqua", 25, "bold"), compound=BOTTOM,
+                         bg="#081923", fg="white", bd=0)
+        self.lbl.place(x=20, y=180, height=450, width=350)
+
+        # Start clock
+        self.clock_img = None
+        self.working()
+
         # Footer
         footer = Label(
             self.root,
@@ -152,6 +162,58 @@ class RMS:
             bg="#262626",
             fg="white"
         ).pack(side=BOTTOM, fill=X)
+        self.update_details()
+
+    def update_details(self):
+        con = sqlite3.connect(database=r'rms.db')
+        cur = con.cursor()
+        try:
+            cur.execute("SELECT * FROM course")
+            cr = cur.fetchall()
+            self.lbl_course.config(text=f"Total Courses\n[{str(len(cr))}]")
+
+            cur.execute("SELECT * FROM student")
+            cr = cur.fetchall()
+            self.lbl_student.config(text=f"Total Students\n[{str(len(cr))}]")
+
+            cur.execute("SELECT * FROM result")
+            cr = cur.fetchall()
+            self.lbl_result.config(text=f"Total Results\n[{str(len(cr))}]")
+
+            self.lbl_course.after(200, self.update_details)
+        except Exception as ex:
+            messagebox.showerror("Error!", f"Error Due To: {str(ex)}.", parent=self.root)
+
+    # Draw clock in memory
+    def clock_image(self, hr, min_, sec_):
+        clock = Image.new("RGB", (400, 400), (8, 25, 35))
+        draw = ImageDraw.Draw(clock)
+
+        # Clock background
+        bg = Image.open("images/c.png").resize((300, 300), Image.Resampling.LANCZOS)
+        clock.paste(bg, (50, 50))
+
+        origin = 200, 200
+        # Hour hand
+        draw.line((origin, 200 + 50 * sin(radians(hr)), 200 - 50 * cos(radians(hr))), fill="#DF005E", width=4)
+        # Minute hand
+        draw.line((origin, 200 + 80 * sin(radians(min_)), 200 - 80 * cos(radians(min_))), fill="white", width=3)
+        # Second hand
+        draw.line((origin, 200 + 100 * sin(radians(sec_)), 200 - 100 * cos(radians(sec_))), fill="yellow", width=2)
+        # Center circle
+        draw.ellipse((195, 195, 210, 210), fill="#1AD5D5")
+        return ImageTk.PhotoImage(clock)
+
+    def working(self):
+        now = datetime.now()
+        h, m, s = now.hour, now.minute, now.second
+        hr_angle = (h % 12 + m / 60) * 30        
+        min_angle = (m + s / 60) * 6             
+        sec_angle = s * 6                         
+
+        self.clock_img = self.clock_image(hr_angle, min_angle, sec_angle)
+        self.lbl.config(image=self.clock_img)
+        self.lbl.after(200, self.working)
 
     def add_course(self):
         self.new_win = Toplevel(self.root)

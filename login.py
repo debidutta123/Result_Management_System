@@ -59,9 +59,9 @@ class Login:
 
         # Start clock
         self.clock_img = None
-        self.working()
+        self.working() 
 
-    # Draw clock in memory (no disk saving)
+    # Draw clock in memory
     def clock_image(self, hr, min_, sec_):
         clock = Image.new("RGB", (400, 400), (8, 25, 35))
         draw = ImageDraw.Draw(clock)
