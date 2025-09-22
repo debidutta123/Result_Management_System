@@ -1,7 +1,10 @@
-from tkinter import *
-from tkinter import ttk, messagebox
-from PIL import Image, ImageTk
+import os
+import bcrypt
 import sqlite3
+from tkinter import *
+from PIL import ImageTk
+from tkinter import ttk, messagebox
+
 
 class Register:
     def __init__(self, root):
@@ -93,7 +96,6 @@ class Register:
         )
         btn_login.place(x=400, y=420, width=180, height=35)
 
-
     def register_data(self):
         if self.var_fname.get() == "" or self.var_email.get() == "" or self.var_question.get() == "Select":
             messagebox.showerror("Error", "All fields are required!", parent=self.root)
@@ -110,25 +112,31 @@ class Register:
                 if row is not None:
                     messagebox.showerror("Error", "User already exists, please try another email", parent=self.root)
                 else:
-                    cur.execute("INSERT INTO users (fname, lname, contact, email, question, answer, password) VALUES (?,?,?,?,?,?,?)", (
-                        self.var_fname.get(),
-                        self.var_lname.get(),
-                        self.var_contact.get(),
-                        self.var_email.get(),
-                        self.var_question.get(),
-                        self.var_answer.get(),
-                        self.var_password.get()
-                    ))
+                    # 🔑 Hash the password using bcrypt
+                    hashed_password = bcrypt.hashpw(self.var_password.get().encode('utf-8'), bcrypt.gensalt())
+
+                    cur.execute("""INSERT INTO users 
+                                (fname, lname, contact, email, question, answer, password) 
+                                VALUES (?,?,?,?,?,?,?)""", (
+                                    self.var_fname.get(),
+                                    self.var_lname.get(),
+                                    self.var_contact.get(),
+                                    self.var_email.get(),
+                                    self.var_question.get(),
+                                    self.var_answer.get(),
+                                    hashed_password
+                                ))
                     con.commit()
                     messagebox.showinfo("Success", "Registration Successful!", parent=self.root)
                     self.clear_fields()
+                    self.login()
                 con.close()
             except Exception as ex:
                 messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
 
     def login(self):
         self.root.destroy()
-        import login
+        os.system("python login.py")
 
     def clear_fields(self):
         self.var_fname.set("")

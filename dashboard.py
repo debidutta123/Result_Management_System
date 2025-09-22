@@ -1,3 +1,4 @@
+import os
 from math import *
 from tkinter import *
 from datetime import *
@@ -5,6 +6,7 @@ from result import Result
 from report import Report
 from course import Course
 from student import Student
+from tkinter import messagebox
 from PIL import Image, ImageTk, ImageDraw
 
 
@@ -86,7 +88,8 @@ class RMS:
             font=("goudy old style", 15, "bold"),
             bg="#0b5377",
             fg="white",
-            cursor="hand2"
+            cursor="hand2",
+            command=self.logout
         ).place(x=840, y=5, width=195, height=40)
 
         btn_exit = Button(
@@ -95,7 +98,8 @@ class RMS:
             font=("goudy old style", 15, "bold"),
             bg="#0b5377",
             fg="white",
-            cursor="hand2"
+            cursor="hand2",
+            command=self.exit_
         ).place(x=1045, y=5, width=195, height=40)
 
         # Content
@@ -164,6 +168,17 @@ class RMS:
     def view_report(self):
         self.new_win = Toplevel(self.root)
         self.new_obj = Report(self.new_win)
+
+    def logout(self):
+        op = messagebox.askyesno("Confirm!", "Do you really want to logout?", parent=self.root)
+        if op == True:
+            self.root.destroy()
+            os.system("python login.py")
+
+    def exit_(self):
+        op = messagebox.askyesno("Confirm!", "Do you really want to exit?", parent=self.root)
+        if op == True:
+            self.root.destroy()
 
 
 if __name__ == "__main__":

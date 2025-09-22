@@ -1,3 +1,5 @@
+import os
+import bcrypt
 import sqlite3
 from math import *
 from tkinter import *
@@ -90,7 +92,7 @@ class Login:
         self.lbl.config(image=self.clock_img)
         self.lbl.after(200, self.working)
 
-    # Login validation
+    # Login validation (with bcrypt)
     def login(self):
         email = self.txt_email.get()
         password = self.txt_pass_.get()
@@ -102,20 +104,27 @@ class Login:
         try:
             con = sqlite3.connect("rms.db")
             cur = con.cursor()
-            cur.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+            cur.execute("SELECT fname, password FROM users WHERE email=?", (email,))
             row = cur.fetchone()
             con.close()
 
-            if row == None:
+            if row is None:
                 messagebox.showerror("Error", "Invalid Email or Password", parent=self.root)
             else:
-                messagebox.showinfo("Success", f"Welcome {row[1]}!", parent=self.root)
+                fname, stored_hash = row
+                if bcrypt.checkpw(password.encode("utf-8"), stored_hash):
+                    messagebox.showinfo("Success", f"Welcome {fname}!", parent=self.root)
+                    self.root.destroy()
+                    os.system("python dashboard.py")
+                else:
+                    messagebox.showerror("Error", "Invalid Email or Password", parent=self.root)
+
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
 
     def register(self):
         self.root.destroy()
-        import register
+        os.system("python register.py")
 
     def forgot_password(self):
         email = self.txt_email.get()
@@ -180,7 +189,8 @@ class Login:
             if row is None:
                 messagebox.showerror("Error", "Security question/answer is incorrect!", parent=self.root2)
             else:
-                cur.execute("UPDATE users SET password=? WHERE email=?", (new_password, email))
+                hashed_pw = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+                cur.execute("UPDATE users SET password=? WHERE email=?", (hashed_pw, email))
                 conn.commit()
                 messagebox.showinfo("Success", "Password has been reset successfully!", parent=self.root2)
                 self.root2.destroy()
