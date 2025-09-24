@@ -45,7 +45,7 @@ class RMS:
         # Title
         title = Label(
             self.root,
-            text=f"Welcome, {self.user_name} - Student Result Management System",
+            text=f"Welcome {self.user_name}, - Student Result Management System",
             padx=10,
             compound=LEFT,
             image=self.logo_dash,
